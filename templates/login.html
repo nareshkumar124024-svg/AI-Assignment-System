@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - AI Assignment System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+
+            background:
+                radial-gradient(circle at top left, #2563eb 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #7c3aed 0%, transparent 35%),
+                linear-gradient(135deg, #0f172a, #172554);
+        }
+
+        /* Main Login Container */
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .auth-box {
+            width: 100%;
+            min-height: 570px;
+
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Left Branding Section */
+
+        .auth-box::before {
+            content: "";
+            display: block;
+
+            grid-column: 1;
+
+            grid-row: 1;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #1d4ed8
+                );
+
+            position: relative;
+        }
+
+        /* Left Content */
+
+        .auth-box h1 {
+            position: absolute;
+
+            left: 55px;
+            top: 130px;
+
+            width: 400px;
+
+            color: white;
+
+            font-size: 38px;
+
+            line-height: 1.2;
+
+            z-index: 2;
+        }
+
+        .auth-box h1::before {
+            content: "🤖";
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 65px;
+            height: 65px;
+
+            margin-bottom: 25px;
+
+            border-radius: 18px;
+
+            background: rgba(255,255,255,0.15);
+
+            font-size: 30px;
+
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-box > p {
+            position: absolute;
+
+            left: 55px;
+            top: 285px;
+
+            width: 380px;
+
+            color: #dbeafe;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            z-index: 2;
+        }
+
+        /* Feature Text */
+
+        .auth-box::after {
+            content:
+                "✓ AI-powered question generation\A"
+                "✓ Digital assignment submission\A"
+                "✓ Intelligent AI evaluation\A"
+                "✓ Smart performance tracking";
+
+            white-space: pre;
+
+            position: absolute;
+
+            margin-left: 55px;
+            margin-top: 390px;
+
+            color: #e0ecff;
+
+            font-size: 14px;
+
+            line-height: 2.4;
+
+            z-index: 5;
+        }
+
+        /* Form Area */
+
+        form {
+            grid-column: 2;
+            grid-row: 1;
+
+            padding: 65px 55px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+
+            background: white;
+        }
+
+        /* Form Groups */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+
+            width: 100%;
+
+            padding: 14px 16px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: #f9fafb;
+
+            color: #111827;
+
+            font-size: 15px;
+
+            transition: all 0.25s ease;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #93c5fd;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color: #2563eb;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+
+        /* Login Button */
+
+        .btn {
+
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+
+            box-shadow:
+                0 8px 20px rgba(37,99,235,0.25);
+        }
+
+        .btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 28px rgba(37,99,235,0.35);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Register Links */
+
+        .auth-links {
+
+            grid-column: 2;
+            grid-row: 1;
+
+            align-self: end;
+
+            margin: 0 55px 35px 55px;
+
+            text-align: center;
+
+            z-index: 10;
+        }
+
+        .auth-links p {
+
+            margin-top: 8px;
+
+            color: #6b7280;
+
+            font-size: 13px;
+        }
+
+        .auth-links a {
+
+            color: #2563eb;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .auth-links a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Decorative Circles */
+
+        .auth-container {
+            position: relative;
+        }
+
+        .auth-container::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            top: 8%;
+            left: 5%;
+        }
+
+        .auth-container::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            bottom: 5%;
+            right: 5%;
+        }
+
+        /* Mobile Responsive */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .auth-box {
+
+                display: flex;
+
+                flex-direction: column;
+
+                min-height: auto;
+            }
+
+            .auth-box::before {
+                display: none;
+            }
+
+            .auth-box h1 {
+
+                position: static;
+
+                width: auto;
+
+                padding: 35px 30px 10px;
+
+                background:
+                    linear-gradient(
+                        145deg,
+                        #111827,
+                        #1d4ed8
+                    );
+
+                font-size: 28px;
+            }
+
+            .auth-box h1::before {
+                margin-bottom: 18px;
+            }
+
+            .auth-box > p {
+
+                position: static;
+
+                width: auto;
+
+                padding: 0 30px 30px;
+
+                background:
+                    linear-gradient(
+                        145deg,
+                        #111827,
+                        #1d4ed8
+                    );
+            }
+
+            .auth-box::after {
+                display: none;
+            }
+
+            form {
+                padding: 35px 30px 25px;
+            }
+
+            .auth-links {
+
+                margin: 0;
+
+                padding: 0 30px 30px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-box">
+
+        <h1>
+            AI Assignment System
+        </h1>
+
+        <p>
+            Smart assignment management powered by
+            Artificial Intelligence for students and teachers.
+        </p>
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <div class="form-group">
+
+                <label for="user_id">
+                    Student / Teacher ID
+                </label>
+
+                <input
+                    type="text"
+                    id="user_id"
+                    name="user_id"
+                    placeholder="Enter your ID"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="role">
+                    Login As
+                </label>
+
+                <select id="role" name="role" required>
+
+                    <option value="">
+                        Select Role
+                    </option>
+
+                    <option value="student">
+                        Student
+                    </option>
+
+                    <option value="teacher">
+                        Teacher
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn">
+
+                Login →
+
+            </button>
+
+        </form>
+
+
+        <div class="auth-links">
+
+            <p>
+
+                Don't have a Student account?
+
+                <a href="{{ url_for('student_register') }}">
+                    Register as Student
+                </a>
+
+            </p>
+
+
+            <p>
+
+                Don't have a Teacher account?
+
+                <a href="{{ url_for('teacher_register') }}">
+                    Register as Teacher
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

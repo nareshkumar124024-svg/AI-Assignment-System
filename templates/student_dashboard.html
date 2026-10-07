@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================
+           Dashboard Statistics
+        ========================= */
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+        }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .stat-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+
+
+        /* =========================
+           Assignment
+        ========================= */
+
+        .assignment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+
+        .assignment-info {
+            flex: 1;
+        }
+
+        .assignment-info h2 {
+            margin-top: 0;
+        }
+
+        .assignment-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 12px;
+            color: #555;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           Status Badges
+        ========================= */
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .status-not-submitted {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .status-submitted {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .status-evaluated {
+            background: #ecfdf5;
+            color: #15803d;
+        }
+
+        .status-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           Assignment Buttons
+        ========================= */
+
+        .assignment-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .assignment-actions .ai-btn {
+            text-decoration: none;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           Empty State
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+        }
+
+
+        /* =========================
+           Responsive
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .assignment-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .assignment-actions {
+                margin-left: 0;
+                margin-top: 15px;
+                width: 100%;
+            }
+
+            .assignment-actions .ai-btn {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         Navigation Bar
+    ========================= -->
+
+    <div class="navbar">
+
+        <h2>AI Assignment System</h2>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <!-- =========================
+             Welcome
+        ========================= -->
+
+        <div class="card">
+
+            <h1>
+                Welcome, {{ session['name'] }} 👋
+            </h1>
+
+            <p>
+                Student Dashboard
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             Statistics
+        ========================= -->
+
+        <div class="stats-container">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ total_assignments }}
+                    </h3>
+
+                    <p>
+                        Total Assignments
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📤
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ submitted_assignments }}
+                    </h3>
+
+                    <p>
+                        Submitted
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ pending_assignments }}
+                    </h3>
+
+                    <p>
+                        Pending
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <div class="stat-info">
+
+                    <h3>
+                        {{ evaluated_assignments }}
+                    </h3>
+
+                    <p>
+                        Evaluated
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             Available Assignments
+        ========================= -->
+
+        <div class="card">
+
+            <h2>
+                📚 Available Assignments
+            </h2>
+
+
+            {% if assignments %}
+
+                {% for assignment in assignments %}
+
+
+                <div class="assignment-item">
+
+
+                    <div class="assignment-info">
+
+
+                        <h2>
+                            {{ assignment.subject }}
+                        </h2>
+
+
+                        <!-- Assignment Status -->
+
+                        {% if not assignment.submission_id %}
+
+                            <span class="status-badge status-not-submitted">
+                                🟡 Not Submitted
+                            </span>
+
+                        {% elif assignment.teacher_approved == 1 %}
+
+                            <span class="status-badge status-evaluated">
+                                🟢 Evaluated
+                            </span>
+
+                        {% elif assignment.submission_status == "Rejected" %}
+
+                            <span class="status-badge status-rejected">
+                                🔴 Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge status-submitted">
+                                🔵 Submitted
+                            </span>
+
+                        {% endif %}
+
+
+                        <p>
+
+                            <strong>
+                                Topic:
+                            </strong>
+
+                            {{ assignment.topic }}
+
+                        </p>
+
+
+                        <div class="assignment-meta">
+
+                            <span>
+                                📝 {{ assignment.total_questions }} Questions
+                            </span>
+
+                            <span>
+                                🎯 {{ assignment.total_marks }} Marks
+                            </span>
+
+                            <span>
+                                📊 {{ assignment.difficulty }}
+                            </span>
+
+                            <span>
+                                📅 Deadline: {{ assignment.deadline }}
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Assignment Actions -->
+
+                    <div class="assignment-actions">
+
+
+                        <a href="/student/assignment/{{ assignment.id }}"
+                           class="ai-btn">
+
+                            📝 Start Assignment
+
+                        </a>
+
+
+                        {% if assignment.submission_id %}
+
+                            <a href="/student/result/{{ assignment.submission_id }}"
+                               class="ai-btn">
+
+                                📊 View Result
+
+                            </a>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="empty-state">
+
+                    <h3>
+                        📭 No Assignments Available
+                    </h3>
+
+                    <p>
+                        There are currently no assignments available.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =========================
+             My Submissions
+        ========================= -->
+
+       <div class="card">
+
+    <h2>
+        📊 My Submissions
+    </h2>
+
+    {% if my_submissions %}
+
+        {% for submission in my_submissions %}
+
+        <div class="assignment-item">
+
+            <div class="assignment-info">
+
+                <h2>
+                    {{ submission.subject }}
+                </h2>
+
+                <p>
+                    <strong>Topic:</strong>
+                    {{ submission.topic }}
+                </p>
+
+                <div class="assignment-meta">
+
+                    <span>
+                        📄 {{ submission.file_name }}
+                    </span>
+
+                    <span>
+                        📅 Submitted:
+                        {{ submission.submitted_at }}
+                    </span>
+
+                    <span>
+                        🎯 Max Marks:
+                        {{ submission.total_marks }}
+                    </span>
+
+                </div>
+
+                <br>
+
+                {% if submission.status == "Pending" %}
+
+                    <span class="status-badge status-submitted">
+                        🟡 Pending
+                    </span>
+
+                {% elif submission.status == "Reviewed" %}
+
+                    <span class="status-badge status-evaluated">
+                        🟢 Reviewed
+                    </span>
+
+                {% elif submission.status == "Rejected" %}
+
+                    <span class="status-badge status-rejected">
+                        🔴 Rejected
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge status-submitted">
+                        🔵 {{ submission.status }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+            <div class="assignment-actions">
+
+                <a href="/student/result/{{ submission.submission_id }}"
+                   class="ai-btn">
+                    📊 View Result
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>
+                📭 No Submissions Yet
+            </h3>
+
+            <p>
+                Your submitted assignments will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+    </div>
+
+
+</body>
+
+</html>

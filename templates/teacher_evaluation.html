@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Evaluation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .evaluation-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .marks-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f5f7fa;
+            border-radius: 8px;
+        }
+
+        .ai-feedback {
+            margin-top: 10px;
+            padding: 12px;
+            background: #eef6ff;
+            border-radius: 8px;
+        }
+
+        .teacher-section {
+            background: #fff8e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .teacher-input {
+            padding: 10px;
+            width: 120px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .teacher-textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .approved {
+            color: green;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .button-row {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>AI Assignment System</h2>
+
+    <a href="/teacher/submissions">
+        ← Back to Submissions
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <h1>🤖 AI Evaluation</h1>
+
+    <p>
+        <strong>Submission ID:</strong>
+        {{ submission_id }}
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- QUESTION WISE AI EVALUATION -->
+    <!-- ========================= -->
+
+    {% for evaluation in evaluations %}
+
+    <div class="evaluation-card">
+
+        <div class="question-title">
+
+            Q{{ evaluation.question_number }}.
+
+            {{ evaluation.question_text }}
+
+        </div>
+
+
+        <p>
+            <strong>Maximum Marks:</strong>
+            {{ evaluation.marks }}
+        </p>
+
+
+        <div class="marks-box">
+
+            <strong>🤖 AI Marks:</strong>
+
+            {{ evaluation.ai_marks }}
+
+            /
+
+            {{ evaluation.marks }}
+
+        </div>
+
+
+        <div class="ai-feedback">
+
+            <strong>💬 AI Feedback:</strong>
+
+            <p>
+                {{ evaluation.ai_feedback }}
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- ========================= -->
+    <!-- TEACHER FINAL EVALUATION -->
+    <!-- ========================= -->
+
+    {% if evaluations %}
+
+    <div class="teacher-section">
+
+        <h2>👨‍🏫 Teacher Final Evaluation</h2>
+
+        <p>
+            Enter the final marks and feedback for this student's
+            complete assignment.
+        </p>
+
+
+        <!-- TEACHER FEEDBACK -->
+
+        <label>
+            <strong>🗒️ Teacher Feedback:</strong>
+        </label>
+
+        <textarea
+            id="teacherFeedback"
+            class="teacher-textarea"
+            rows="6"
+            placeholder="Enter overall feedback for the student..."
+        ></textarea>
+
+
+        <!-- QUESTION MARKS -->
+
+        <h3 style="margin-top:25px;">
+            ✏️ Teacher Marks
+        </h3>
+
+        {% for evaluation in evaluations %}
+
+        <div style="
+            margin-top:15px;
+            padding:15px;
+            background:#ffffff;
+            border-radius:8px;
+        ">
+
+            <strong>
+                Q{{ evaluation.question_number }}
+            </strong>
+
+            <br><br>
+
+            <form method="POST"
+                  action="/teacher/update-evaluation/{{ evaluation.id }}">
+
+                <input
+                    type="number"
+                    name="teacher_marks"
+                    class="teacher-input"
+                    min="0"
+                    max="{{ evaluation.marks }}"
+                    step="0.5"
+                    value="{{ evaluation.teacher_marks if evaluation.teacher_marks is not none else '' }}"
+                    required
+                >
+
+                / {{ evaluation.marks }}
+
+
+                <input
+                    type="hidden"
+                    name="teacher_feedback"
+                    id="feedback-{{ evaluation.id }}"
+                >
+
+                <br><br>
+
+                <button
+                    type="submit"
+                    class="pdf-btn"
+                    onclick="
+                        document.getElementById('feedback-{{ evaluation.id }}').value =
+                        document.getElementById('teacherFeedback').value;
+                    ">
+                    💾 Save Q{{ evaluation.question_number }} Marks
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+
+        <!-- APPROVAL BUTTON -->
+
+        <div style="margin-top:30px;">
+
+            {% if evaluations[0].teacher_approved %}
+
+                <p class="approved">
+                    ✅ Evaluation Approved
+                </p>
+
+            {% else %}
+
+                <form method="POST"
+                      action="/teacher/approve-evaluation/{{ evaluations[0].id }}">
+
+                    <button
+                        type="submit"
+                        class="pdf-btn"
+                        onclick="return confirm('Are you sure you want to approve this complete evaluation?');">
+
+                        ✅ Approve Complete Evaluation
+
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Submissions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>AI Assignment System</h2>
+
+        <a href="{{ url_for('teacher_dashboard') }}">
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>📥 Student Submissions</h1>
+
+            <p>
+                View and download submitted assignment PDFs.
+            </p>
+
+        </div>
+
+
+        {% if submissions %}
+
+            {% for submission in submissions %}
+
+            <div class="card">
+
+                <h2>
+                    📚 {{ submission.subject }}
+                </h2>
+
+                <p>
+                    <strong>Topic:</strong>
+                    {{ submission.topic }}
+                </p>
+
+                <p>
+                    <strong>Student:</strong>
+                    {{ submission.student_name }}
+                </p>
+
+                <p>
+                    <strong>Student ID:</strong>
+                    {{ submission.student_code }}
+                </p>
+
+                <p>
+                    <strong>File:</strong>
+                    {{ submission.file_name }}
+                </p>
+
+                <p>
+                    <strong>Submitted:</strong>
+                    {{ submission.submitted_at }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ submission.status }}
+                </p>
+            <div class="submission-status">
+
+    <a href="/teacher/submission-status/{{ submission.id }}/Pending"
+       class="status-btn pending-btn">
+        🟡 Pending
+    </a>
+
+    <a href="/teacher/submission-status/{{ submission.id }}/Reviewed"
+       class="status-btn reviewed-btn">
+        🟢 Reviewed
+    </a>
+
+    <a href="/teacher/submission-status/{{ submission.id }}/Rejected"
+       class="status-btn rejected-btn">
+        🔴 Rejected
+    </a>
+
+</div>
+                <br>
+
+                <a href="/teacher/submission/{{ submission.id }}"
+                   class="pdf-btn">
+                    📄 View / Download PDF
+                </a>
+                <a href="/teacher/evaluate-submission/{{ submission.id }}"
+                    class="pdf-btn">
+                        🤖 Evaluate with AI
+                </a>
+                <a href="/teacher/evaluation/{{ submission.id }}"
+                    class="pdf-btn">
+                        🤖 View AI Evaluation
+                </a>
+                
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+
+                <h2>📭 No Submissions</h2>
+
+                <p>
+                    No students have submitted assignments yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

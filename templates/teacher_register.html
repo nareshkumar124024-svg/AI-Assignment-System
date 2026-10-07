@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Registration - AI Assignment System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #7c3aed 0%, transparent 35%),
+                linear-gradient(135deg, #0f172a, #1e293b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .auth-box {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        /* LEFT SIDE */
+
+        .auth-box::before {
+            content: "AI ASSIGNMENT SYSTEM";
+            white-space: pre-wrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            line-height: 1.5;
+
+            padding: 45px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(37, 99, 235, 0.95),
+                    rgba(124, 58, 237, 0.95)
+                );
+        }
+
+        /* FORM SIDE */
+
+        .auth-box > h1,
+        .auth-box > p,
+        .auth-box > form,
+        .auth-box > .auth-links {
+            grid-column: 2;
+        }
+
+        .auth-box > h1 {
+            margin: 40px 45px 5px;
+            color: #0f172a;
+            font-size: 30px;
+            font-weight: 750;
+        }
+
+        .auth-box > p {
+            margin: 0 45px 25px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        form {
+            margin: 0 45px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 48px;
+            padding: 0 15px;
+
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+
+            background: #f8fafc;
+            color: #0f172a;
+
+            font-size: 14px;
+            outline: none;
+
+            transition: all 0.25s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .form-group input:focus {
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .btn {
+            width: 100%;
+            height: 50px;
+
+            margin-top: 5px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+
+            transition: all 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .auth-links {
+            margin: 25px 45px 35px;
+            padding-top: 20px;
+
+            border-top: 1px solid #e2e8f0;
+
+            text-align: center;
+        }
+
+        .auth-links p {
+            margin: 9px 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .auth-links a {
+            color: #4f46e5;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            .auth-box {
+                display: block;
+            }
+
+            .auth-box::before {
+                min-height: 150px;
+                font-size: 22px;
+            }
+
+            .auth-box > h1 {
+                margin: 30px 30px 5px;
+                font-size: 25px;
+            }
+
+            .auth-box > p {
+                margin: 0 30px 22px;
+            }
+
+            form {
+                margin: 0 30px;
+            }
+
+            .auth-links {
+                margin: 25px 30px 30px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-box">
+
+        <h1>Teacher Registration</h1>
+
+        <p>Create your teacher account</p>
+
+        <form method="POST"
+              action="{{ url_for('teacher_register') }}">
+
+            <div class="form-group">
+                <label for="teacher_id">Teacher ID</label>
+
+                <input
+                    type="text"
+                    id="teacher_id"
+                    name="teacher_id"
+                    placeholder="Enter your teacher ID"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="email">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="department">Department</label>
+
+                <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    placeholder="e.g. Computer Science"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+            </div>
+
+
+            <button type="submit" class="btn">
+                Register
+            </button>
+
+        </form>
+
+
+        <div class="auth-links">
+
+            <p>
+                Already have an account?
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+            </p>
+
+            <p>
+                Are you a student?
+
+                <a href="{{ url_for('student_register') }}">
+                    Student Registration
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

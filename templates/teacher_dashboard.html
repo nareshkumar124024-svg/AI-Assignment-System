@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            AI Assignment
+        </div>
+
+        <div class="role">
+            Teacher Panel
+        </div>
+
+        <nav>
+            <a href="/teacher/dashboard" class="nav-item active">
+                🏠 Dashboard
+            </a>
+
+            <a href="/teacher/create-assignment" class="nav-item">
+                ➕ Create Assignment
+            </a>
+
+            <a href="/teacher/assignments" class="nav-item">
+    📚 My Assignments
+</a>
+
+<a href="/teacher/submissions" class="nav-item">
+    📥 Submissions
+</a>
+
+<a href="#" class="nav-item">
+    📊 Results
+</a>
+
+            <a href="/teacher/students" class="nav-item">
+                👨‍🎓 Students
+            </a>
+        </nav>
+
+        <a href="/logout" class="logout">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <div class="topbar">
+            <div>
+                <h1>Teacher Dashboard</h1>
+                <p>Manage assignments and monitor student performance.</p>
+            </div>
+
+            <div class="profile">
+                <div class="profile-icon">
+                    {{ name[0] }}
+                </div>
+
+                <div>
+                    <strong>{{ name }}</strong>
+                    <small>Teacher</small>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Welcome -->
+        <div class="welcome-card">
+
+            <div>
+                <h2>Welcome, {{ name }} 👋</h2>
+
+                <p>
+                    Create assignments, generate questions
+                    and manage student submissions.
+                </p>
+            </div>
+
+            <div class="teacher-id">
+                Teacher ID<br>
+                <strong>{{ teacher_id }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div>
+                    <h3>{{ total_assignments }}</h3>
+                    <p>Total Assignments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div>
+                    <h3>{{ total_students }}</h3>
+                    <p>Students</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div>
+                    <h3>{{ total_submissions }}</h3>
+                    <p>Submissions</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div>
+                    <h3>{{ average_score }}%</h3>
+                    <p>Average Score</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Actions -->
+        <h2 class="section-title">Quick Actions</h2>
+
+        <div class="actions">
+
+            <a href="/teacher/create-assignment"
+               class="action-card">
+
+                <div class="action-icon">➕</div>
+
+                <div>
+                    <h3>Create Assignment</h3>
+                    <p>Create a new assignment for students.</p>
+                </div>
+
+            </a>
+
+
+            <a href="#"
+               class="action-card">
+
+                <div class="action-icon">🤖</div>
+
+                <div>
+                    <h3>Generate Questions</h3>
+                    <p>Generate questions using AI.</p>
+                </div>
+
+            </a>
+
+
+            <a href="#"
+               class="action-card">
+
+                <div class="action-icon">📊</div>
+
+                <div>
+                    <h3>View Results</h3>
+                    <p>Check student performance and marks.</p>
+                </div>
+
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

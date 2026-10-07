@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Generate Questions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="assignment-page">
+
+    <div class="assignment-header">
+
+        <div>
+
+            <h1>AI Question Generator</h1>
+
+            <p>
+                Generate questions for your assignment
+            </p>
+
+        </div>
+
+        <a href="/teacher/assignments"
+           class="back-btn">
+            ← My Assignments
+        </a>
+
+    </div>
+
+
+    <div class="assignment-card">
+
+        <div class="form-title">
+
+            <div class="form-icon">
+                🤖
+            </div>
+
+            <div>
+
+                <h2>{{ assignment.subject }}</h2>
+
+                <p>
+                    Topic: {{ assignment.topic }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-info">
+
+            <div class="ai-info-icon">
+                📚
+            </div>
+
+            <div>
+
+                <strong>Assignment Details</strong>
+
+                <p>
+                    Questions:
+                    {{ assignment.total_questions }}
+                    &nbsp; | &nbsp;
+
+                    Difficulty:
+                    {{ assignment.difficulty }}
+                    &nbsp; | &nbsp;
+
+                    Marks:
+                    {{ assignment.total_marks }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="generate-box">
+
+            <h2>Generate Questions with AI</h2>
+
+            <p>
+                AI will generate questions based on the
+                subject, topic and selected difficulty.
+            </p>
+
+            <br>
+
+            <form method="POST">
+
+                <button type="submit" class="create-btn">
+                    🤖 Generate Questions
+                </button>
+
+            </form>
+
+            {% if questions %}
+<div class="questions-result">
+
+    <h2>Generated Questions</h2>
+
+    {% for question in questions %}
+        {% if question.strip() %}
+        <div class="question-card">
+            {{ question }}
+        </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endif %}
+
+        </div>
+
+
+        <div id="result"
+             style="margin-top:25px;">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function generateQuestions() {
+
+    const result = document.getElementById("result");
+
+    result.innerHTML = `
+        <div class="ai-info">
+            <div class="ai-info-icon">⏳</div>
+
+            <div>
+                <strong>Generating Questions...</strong>
+
+                <p>
+                    Please wait while AI prepares your questions.
+                </p>
+            </div>
+        </div>
+    `;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submit Assignment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>AI Assignment System</h2>
+
+        <a href="{{ url_for('student_dashboard') }}">
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- Assignment Details -->
+
+        <div class="card">
+
+            <h1>📚 {{ assignment.subject }}</h1>
+
+            <p>
+                <strong>Topic:</strong>
+                {{ assignment.topic }}
+            </p>
+
+            <p>
+                <strong>Questions:</strong>
+                {{ assignment.total_questions }}
+            </p>
+
+            <p>
+                <strong>Total Marks:</strong>
+                {{ assignment.total_marks }}
+            </p>
+
+            <p>
+                <strong>Difficulty:</strong>
+                {{ assignment.difficulty }}
+            </p>
+
+            <p>
+                <strong>Deadline:</strong>
+                {{ assignment.deadline }}
+            </p>
+
+        </div>
+
+
+        <!-- Questions -->
+
+        <div class="card">
+
+            <h2>📝 Assignment Questions</h2>
+
+            {% if questions %}
+
+                {% for question in questions %}
+
+                <div class="question-card">
+
+                    <strong>
+                        Q{{ question.question_number }}.
+                    </strong>
+
+                    {{ question.question_text }}
+
+                    <span>
+                        ({{ question.marks }} Marks)
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No questions available.</p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Existing Submission -->
+
+        {% if submission %}
+
+        <div class="card">
+
+            <h2>📊 Submission Status</h2>
+
+            {% if submission.status == "Pending" %}
+
+                <p>🟡 <strong>Status:</strong> Pending</p>
+
+            {% elif submission.status == "Reviewed" %}
+
+                <p>🟢 <strong>Status:</strong> Reviewed</p>
+
+            {% elif submission.status == "Rejected" %}
+
+                <p>🔴 <strong>Status:</strong> Rejected</p>
+
+            {% else %}
+
+                <p>
+                    ⚪ <strong>Status:</strong>
+                    {{ submission.status }}
+                </p>
+
+            {% endif %}
+
+
+            <p>
+                📄 <strong>Submitted File:</strong>
+                {{ submission.file_name }}
+            </p>
+
+
+            <!-- Delete Submission -->
+
+            <form method="POST"
+                  action="{{ url_for('delete_student_submission', submission_id=submission.id) }}"
+                  onsubmit="return confirm('Are you sure you want to delete this submission?');">
+
+                <button type="submit"
+                        class="create-btn"
+                        style="background:#dc3545; margin-top:15px;">
+
+                    🗑️ Delete Submission
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Already Submitted Message -->
+
+        <div class="card">
+
+            <h3>⚠️ Assignment Already Submitted</h3>
+
+            <p>
+                You have already submitted this assignment.
+            </p>
+
+            <p>
+                To submit a new PDF, first delete your previous
+                submission using the button above.
+            </p>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- PDF Upload -->
+
+        <div class="card">
+
+            <h2>📄 Submit Assignment</h2>
+
+            <p>
+                Complete the assignment and upload your answer
+                sheet in <strong>PDF format</strong>.
+            </p>
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    name="assignment_pdf"
+                    accept=".pdf"
+                    required
+                >
+
+                <br><br>
+
+                <button type="submit"
+                        class="create-btn">
+
+                    📤 Submit PDF
+
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

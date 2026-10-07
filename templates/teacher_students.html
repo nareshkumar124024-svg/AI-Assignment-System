@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submitted Students</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            AI Assignment
+        </div>
+
+        <div class="role">
+            Teacher Panel
+        </div>
+
+        <nav>
+
+            <a href="/teacher/dashboard"
+               class="nav-item">
+                🏠 Dashboard
+            </a>
+
+            <a href="/teacher/create-assignment"
+               class="nav-item">
+                ➕ Create Assignment
+            </a>
+
+            <a href="/teacher/assignments"
+               class="nav-item">
+                📚 My Assignments
+            </a>
+
+            <a href="/teacher/submissions"
+               class="nav-item">
+                📥 Submissions
+            </a>
+
+            <a href="/teacher/students"
+               class="nav-item active">
+                👨‍🎓 Students
+            </a>
+
+        </nav>
+
+        <a href="/logout"
+           class="logout">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Submitted Students</h1>
+
+                <p>
+                    View students who have submitted assignments.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Students -->
+
+        <div class="card">
+
+            <h2>👨‍🎓 Student Submissions</h2>
+
+            {% if submitted_students %}
+
+                <div style="overflow-x:auto;">
+
+                    <table style="width:100%;
+                                  border-collapse:collapse;
+                                  margin-top:20px;">
+
+                        <thead>
+
+                            <tr style="text-align:left;">
+
+                                <th style="padding:12px;">
+                                    Student
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Student ID
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Assignment
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Submitted
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Status
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Marks
+                                </th>
+
+                                <th style="padding:12px;">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for student in submitted_students %}
+
+                            <tr>
+
+                                <td style="padding:12px;">
+
+                                    <strong>
+                                        {{ student.student_name }}
+                                    </strong>
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    {{ student.student_code }}
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    <strong>
+                                        {{ student.subject }}
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        {{ student.topic }}
+                                    </small>
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    {{ student.submitted_at }}
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    {% if student.status == "Reviewed" %}
+
+                                        🟢 Reviewed
+
+                                    {% elif student.status == "Rejected" %}
+
+                                        🔴 Rejected
+
+                                    {% elif student.status == "Pending" %}
+
+                                        🟡 Pending
+
+                                    {% else %}
+
+                                        ⚪ {{ student.status }}
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    <strong>
+                                        {{ student.teacher_marks }}
+                                    </strong>
+
+                                    /
+                                    {{ student.total_marks }}
+
+                                </td>
+
+
+                                <td style="padding:12px;">
+
+                                    <a href="/teacher/submission/{{ student.submission_id }}"
+                                       class="pdf-btn">
+
+                                        📄 PDF
+
+                                    </a>
+
+                                    <br><br>
+
+                                    <a href="/teacher/evaluation/{{ student.submission_id }}"
+                                       class="pdf-btn">
+
+                                        📊 Evaluation
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div style="text-align:center;
+                            padding:40px;">
+
+                    <h3>
+                        📭 No submissions yet
+                    </h3>
+
+                    <p>
+                        No student has submitted an assignment yet.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

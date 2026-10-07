@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Assignment Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .result-header {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .result-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .marks-box {
+            background: #f5f7fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .teacher-section {
+            background: white;
+            padding: 25px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .teacher-feedback {
+            background: #eef6ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .approved {
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .pending {
+            color: #d97706;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .final-result {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="navbar">
+
+    <h2>AI Assignment System</h2>
+
+    <a href="/student/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- ========================= -->
+    <!-- ASSIGNMENT INFORMATION -->
+    <!-- ========================= -->
+
+    <div class="result-header">
+
+        <h1>📊 Assignment Result</h1>
+
+        <p>
+            <strong>Subject:</strong>
+            {{ evaluations[0].subject }}
+        </p>
+
+        <p>
+            <strong>Topic:</strong>
+            {{ evaluations[0].topic }}
+        </p>
+
+        <p>
+            <strong>Submission ID:</strong>
+            {{ submission_id }}
+        </p>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- QUESTION WISE TEACHER MARKS -->
+    <!-- ========================= -->
+
+    {% for evaluation in evaluations %}
+
+    <div class="result-card">
+
+        <div class="question-title">
+
+            Q{{ evaluation.question_number }}.
+            {{ evaluation.question_text }}
+
+        </div>
+
+
+        <p>
+
+            <strong>
+                Maximum Marks:
+            </strong>
+
+            {{ evaluation.marks }}
+
+        </p>
+
+
+        <!-- TEACHER MARKS ONLY -->
+
+        <div class="marks-box">
+
+            <strong>
+                👨‍🏫 Teacher Marks:
+            </strong>
+
+            {% if evaluation.teacher_marks is not none %}
+
+                {{ evaluation.teacher_marks }}
+                / {{ evaluation.marks }}
+
+            {% else %}
+
+                Not assigned
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- ========================= -->
+    <!-- TEACHER EVALUATION -->
+    <!-- ========================= -->
+
+    <div class="teacher-section">
+
+        <h2>👨‍🏫 Teacher Evaluation</h2>
+
+
+        {% if evaluations[0].teacher_feedback %}
+
+        <div class="teacher-feedback">
+
+            <strong>
+                💬 Teacher Feedback
+            </strong>
+
+            <p>
+                {{ evaluations[0].teacher_feedback }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="teacher-feedback">
+
+            <strong>
+                💬 Teacher Feedback
+            </strong>
+
+            <p>
+                No feedback provided.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- APPROVAL STATUS -->
+
+        {% if evaluations[0].teacher_approved %}
+
+            <p class="approved">
+                ✅ Evaluation Approved by Teacher
+            </p>
+
+        {% else %}
+
+            <p class="pending">
+                ⏳ Evaluation Pending Teacher Approval
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- FINAL RESULT -->
+    <!-- ========================= -->
+
+    <div class="final-result">
+
+        <h2>🏆 Final Result</h2>
+
+        <p class="score">
+
+            {{ final_marks }}
+            /
+            {{ total_marks }}
+
+        </p>
+
+        <p>
+            👨‍🏫 Final marks given by teacher
+        </p>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

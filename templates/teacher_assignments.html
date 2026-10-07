@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Assignments</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="assignment-page">
+
+    <div class="assignment-header">
+
+        <div>
+            <h1>My Assignments</h1>
+            <p>Manage all your created assignments</p>
+        </div>
+
+        <a href="/teacher/create-assignment" class="back-btn">
+            + Create Assignment
+        </a>
+
+    </div>
+
+
+    <div class="assignment-list">
+
+        {% if assignments %}
+
+            {% for assignment in assignments %}
+
+            <div class="assignment-item">
+
+                <div class="assignment-info">
+
+                    <h2>{{ assignment.subject }}</h2>
+
+                    <p>
+                        <strong>Topic:</strong>
+                        {{ assignment.topic }}
+                    </p>
+
+                    <div class="assignment-meta">
+
+                        <span>
+                            📝 {{ assignment.total_questions }} Questions
+                        </span>
+
+                        <span>
+                            🎯 {{ assignment.difficulty }}
+                        </span>
+
+                        <span>
+                            ⭐ {{ assignment.total_marks }} Marks
+                        </span>
+
+                        <span>
+                            📅 {{ assignment.deadline }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="assignment-actions">
+
+                    <a href="/teacher/generate-questions/{{ assignment.id }}"
+                        class="ai-btn">
+                        🤖 Generate AI Questions
+                    </a>
+                    <a href="/teacher/assignment-pdf/{{ assignment.id }}"
+                        class="pdf-btn">
+                        📄 Download PDF
+                    </a>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div>📚</div>
+
+                <h2>No Assignments Yet</h2>
+
+                <p>
+                    Create your first assignment to get started.
+                </p>
+
+                <a href="/teacher/create-assignment"
+                   class="create-btn">
+                    Create Assignment
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

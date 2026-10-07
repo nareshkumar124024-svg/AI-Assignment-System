@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration - AI Assignment System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #7c3aed 0%, transparent 35%),
+                linear-gradient(135deg, #0f172a, #1e293b);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 15px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .auth-box {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border-radius: 24px;
+            overflow: hidden;
+
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        /* LEFT BRANDING PANEL */
+
+        .branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 45px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(37, 99, 235, 0.95),
+                    rgba(124, 58, 237, 0.95)
+                );
+        }
+
+        .branding-content h2 {
+            font-size: 30px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 15px;
+        }
+
+        .branding-content p {
+            color: rgba(255,255,255,0.85);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .student-icon {
+            font-size: 55px;
+            margin-bottom: 20px;
+        }
+
+        /* RIGHT FORM */
+
+        .form-section {
+            padding: 40px 45px;
+        }
+
+        .form-section h1 {
+            color: #0f172a;
+
+            font-size: 30px;
+            font-weight: 750;
+
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #64748b;
+
+            font-size: 15px;
+
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #334155;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 46px;
+
+            padding: 0 14px;
+
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+
+            background: #f8fafc;
+
+            color: #0f172a;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.25s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .form-group input:focus {
+            border-color: #6366f1;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        /* ALERTS */
+
+        .alert {
+            padding: 11px 14px;
+
+            border-radius: 9px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+        }
+
+        .alert-danger {
+            color: #991b1b;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            color: #166534;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* REGISTER BUTTON */
+
+        .register-btn {
+            width: 100%;
+            height: 50px;
+
+            margin-top: 5px;
+
+            border: none;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px rgba(79, 70, 229, 0.25);
+
+            transition: all 0.25s ease;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        /* LOGIN LINK */
+
+        .auth-links {
+            margin-top: 23px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e2e8f0;
+
+            text-align: center;
+        }
+
+        .auth-links p {
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        .auth-links a {
+            color: #4f46e5;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            .auth-box {
+                display: block;
+            }
+
+            .branding {
+                min-height: 170px;
+                padding: 30px;
+            }
+
+            .student-icon {
+                font-size: 42px;
+                margin-bottom: 10px;
+            }
+
+            .branding-content h2 {
+                font-size: 23px;
+            }
+
+            .branding-content p {
+                font-size: 13px;
+            }
+
+            .form-section {
+                padding: 30px;
+            }
+
+            .form-section h1 {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-box">
+
+        <!-- LEFT SIDE -->
+
+        <div class="branding">
+
+            <div class="branding-content">
+
+                <div class="student-icon">
+                    🎓
+                </div>
+
+                <h2>
+                    AI ASSIGNMENT SYSTEM
+                </h2>
+
+                <p>
+                    Smart learning and assignment
+                    management platform for students.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="form-section">
+
+            <h1>
+                Student Registration
+            </h1>
+
+            <p class="subtitle">
+                Create your student account
+            </p>
+
+
+            {% if error %}
+
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            {% if success %}
+
+                <div class="alert alert-success">
+                    {{ success }}
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                <div class="form-group">
+
+                    <label>
+                        Student Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student ID
+                    </label>
+
+                    <input
+                        type="text"
+                        name="student_id"
+                        placeholder="Example: STU001"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input
+                        type="text"
+                        name="department"
+                        placeholder="Example: CSE"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                >
+                    Register
+                </button>
+
+            </form>
+
+
+            <div class="auth-links">
+
+                <p>
+
+                    Already registered?
+
+                    <a href="/login">
+                        Login here
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
